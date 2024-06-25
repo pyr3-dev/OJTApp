@@ -1,0 +1,67 @@
+﻿@model int[]
+@{
+    ViewData["Title"] = "Summary";
+}
+
+<div class="text-center">
+    <h1>Summary</h1>
+    <table class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    Single
+                </th>
+                <th>
+                    Married
+                </th>
+                <th>
+                    Widowed
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Model[0]
+                </td>
+                <td>
+                    @Model[1]
+                </td>
+                <td>
+                    @Model[2]
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+    <script src="~/js/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Single', 'Married', 'Widowed'],
+                datasets: [{
+                    label: '# of Votes',
+                    borderColor: '#36A2EB',
+                    backgroundColor: '#9BD0F5',
+                    data: [@Model[0], @Model[1], @Model[2]],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</div>
+
+
+
