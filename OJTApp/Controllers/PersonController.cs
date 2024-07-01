@@ -51,7 +51,23 @@ namespace OJTApp.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        public IActionResult DeleteAllRecords()
+        {
+            if (!_memoryCache.TryGetValue("STS", out int stsValue))
+            {
+                stsValue = 1;
+                _memoryCache.Set("STS", stsValue, TimeSpan.FromDays(1));
+            }
+            _memoryCache.Set("STS", 1);
+            IEnumerable<Person> objPersonsList = _db.Persons;
+            foreach (Person p in objPersonsList)
+            {
+                var obj = _db.Persons.Find(p.Id);
+                _db.Persons.Remove(obj);
+            }
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
         public IActionResult Index()
         {
             return View();
