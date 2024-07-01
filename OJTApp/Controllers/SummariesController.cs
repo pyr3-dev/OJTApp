@@ -89,15 +89,15 @@ namespace OJTApp.Controllers
             }
             IEnumerable<Person> objCategoryList = _db.Persons;
             Dictionary<string, int> statusCounts = (Dictionary<string, int>)_memoryCache.Get("statusCount");
-            statusCountValues["s"] = 0;
-            statusCountValues["m"] = 0;
-            statusCountValues["w"] = 0;
+            statusCounts["s"] = 0;
+            statusCounts["m"] = 0;
+            statusCounts["w"] = 0;
             foreach (Person obj in objCategoryList)
             {
-                statusCountValues[obj.CivilStatus] += 1;
+                statusCounts[obj.CivilStatus] += 1;
 
             }
-            _memoryCache.Set("statusCount", statusCountValues, TimeSpan.FromDays(1));
+            _memoryCache.Set("statusCount", statusCounts, TimeSpan.FromDays(1));
         }
         public IActionResult Index()
         {
