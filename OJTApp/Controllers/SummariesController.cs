@@ -17,16 +17,24 @@ namespace OJTApp.Controllers
         // TODO: GetSummaries
         public IActionResult Summary()
         {
+            TempData["STS"] = _memoryCache.Get("STS");
+
+
+            //Set STS Value if empty on initial run
             if (!_memoryCache.TryGetValue("STS", out int stsValue))
             {
                 stsValue = 1;
                 _memoryCache.Set("STS", stsValue, TimeSpan.FromDays(1));
+                TempData["STS"] = 1;
             }
+            //Calculate summary cache when STS flag is 1
             if ((int)_memoryCache.Get("STS") == 1)
             {
                 CalculateSummaries();
                 _memoryCache.Set("STS", 0);
+                TempData["STS"] = 0;
             }
+            //Get Data from cache
             Dictionary<string, int> statusCount = (Dictionary<string, int>)_memoryCache.Get("statusCount");
             int[] results = { statusCount["s"], statusCount["m"], statusCount["w"] };
             return View(results);
@@ -78,6 +86,7 @@ namespace OJTApp.Controllers
         }*/
         public void CalculateStatusCount()
         {
+            //Set cache values to zero
             if (!_memoryCache.TryGetValue("statusCount", out Dictionary<string, int> statusCountValues))
             {
                 statusCountValues = new Dictionary<string, int>();
@@ -87,20 +96,30 @@ namespace OJTApp.Controllers
                 _memoryCache.Set("statusCount", statusCountValues, TimeSpan.FromDays(1));
 
             }
+            //Get Persons from DB
             IEnumerable<Person> objCategoryList = _db.Persons;
             Dictionary<string, int> statusCounts = (Dictionary<string, int>)_memoryCache.Get("statusCount");
             statusCounts["s"] = 0;
             statusCounts["m"] = 0;
             statusCounts["w"] = 0;
+            //Count and classify the persons based on civil status
             foreach (Person obj in objCategoryList)
             {
                 statusCounts[obj.CivilStatus] += 1;
 
             }
+            //Save data to cache
             _memoryCache.Set("statusCount", statusCounts, TimeSpan.FromDays(1));
         }
         public IActionResult Index()
         {
+            if (!_memoryCache.TryGetValue("STS", out int stsValue))
+            {
+                stsValue = 1;
+                _memoryCache.Set("STS", stsValue, TimeSpan.FromDays(1));
+                TempData["STS"] = 1;
+            }
+            TempData["STS"] = _memoryCache.Get("STS");
             return View();
         }
     }

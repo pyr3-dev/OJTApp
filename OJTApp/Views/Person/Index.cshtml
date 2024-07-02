@@ -1,21 +1,21 @@
 ﻿@model Person
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Persons Controller";
 }
 <div class="text-center">
-    <h1>Index</h1>
+    <h1>Persons Controller</h1>
     <form method="post" class="py-5">
         <div class="py-1">
-            <label asp-for="Name">Name</label>
+            <label asp-for="Name">Name:</label>
             <input asp-for="Name" />
         </div>
         <div class="py-1">
-            <label asp-for="Age">Age</label>
+            <label asp-for="Age">Age:</label>
             <input asp-for="Age" />
 
         </div>
         <div class="py-1">
-            <label asp-for="CivilStatus">Civil Status( s = single | m = married | w = widowed )</label>
+            <label asp-for="CivilStatus">Civil Status:</label>
             <select asp-for="CivilStatus">
                 <option value="s">Single</option>
                 <option value="m">Married</option>
@@ -30,4 +30,10 @@
     <a asp-controller="Person" asp-action="DeleteAllRecords" class="btn btn-primary">
         <i class="bi bi-trash"></i> Delete all Records
     </a>
+    @{
+        var a = TempData["STS"];
+    }
+    <h2>
+        STS @a
+    </h2>
 </div>

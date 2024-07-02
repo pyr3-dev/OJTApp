@@ -1,10 +1,11 @@
 ﻿@model int[]
 @{
     ViewData["Title"] = "Summary";
+    var sts = TempData["STS"];
 }
 
 <div class="text-center">
-    <h1>Summary</h1>
+    <h1>Summary <span>STS = @sts</span></h1>
     <table class="table table-bordered table-striped" style="width:100%">
         <thead>
             <tr>
